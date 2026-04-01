@@ -2,7 +2,7 @@
 
 A complex enterprise multi-step form with a custom-built state management system, validation engine, and cross-tab dependency handling. Built with **React 18 + TypeScript + Vite**.
 
-> **Live Demo:** _🔗 Coming soon — will be updated with Vercel URL after deployment_
+> **Live Demo:** [https://workflow-form-three.vercel.app](https://workflow-form-three.vercel.app)
 
 ---
 
