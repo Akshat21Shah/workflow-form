@@ -58,14 +58,24 @@ const App: React.FC = () => {
     }, 1200);
   }, []);
 
+  // Re-validate on field blur — only fires if validation has already run once.
+  // This clears stale errors immediately after a field is corrected, without
+  // validating on every keystroke (PDF requirement preserved).
+  const handleRevalidate = useCallback(() => {
+    setValidation((prev) => {
+      if (!prev.hasValidated) return prev;
+      return validateForm(formStore.getState());
+    });
+  }, []);
+
   const renderActiveTab = () => {
     switch (activeTab) {
       case 'basicInfo':
-        return <BasicInfoTab validation={validation} />;
+        return <BasicInfoTab validation={validation} onBlur={handleRevalidate} />;
       case 'triggerConfig':
-        return <TriggerConfigTab validation={validation} />;
+        return <TriggerConfigTab validation={validation} onBlur={handleRevalidate} />;
       case 'actionsConfig':
-        return <ActionsConfigTab validation={validation} />;
+        return <ActionsConfigTab validation={validation} onBlur={handleRevalidate} />;
       case 'review':
         return (
           <ReviewTab

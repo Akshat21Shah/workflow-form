@@ -4,9 +4,10 @@ import type { ValidationState } from '../store/types';
 
 interface Props {
   validation: ValidationState;
+  onBlur: () => void;
 }
 
-const ActionsConfigTab: React.FC<Props> = ({ validation }) => {
+const ActionsConfigTab: React.FC<Props> = ({ validation, onBlur }) => {
   // Granular subscriptions — only re-renders when these specific slices change
   const retryPolicy = useFormSlice((s) => s.actionsConfig.retryPolicy);
   const timeoutSeconds = useFormSlice((s) => s.actionsConfig.timeoutSeconds);
@@ -40,6 +41,7 @@ const ActionsConfigTab: React.FC<Props> = ({ validation }) => {
               timeoutSeconds: e.target.value === '' ? null : Number(e.target.value),
             })
           }
+          onBlur={onBlur}
           placeholder="e.g. 60"
           className={getError('timeoutSeconds') ? 'input-error' : ''}
         />
@@ -54,15 +56,16 @@ const ActionsConfigTab: React.FC<Props> = ({ validation }) => {
           <input
             type="checkbox"
             checked={retryPolicy.enabled}
-            onChange={(e) =>
+            onChange={(e) => {
               updateActionsConfig({
                 retryPolicy: {
                   ...retryPolicy,
                   enabled: e.target.checked,
                   maxRetries: e.target.checked ? (retryPolicy.maxRetries ?? 3) : null,
                 },
-              })
-            }
+              });
+              onBlur();
+            }}
           />
           Enable Retry Policy
         </label>
@@ -87,6 +90,7 @@ const ActionsConfigTab: React.FC<Props> = ({ validation }) => {
                 },
               })
             }
+            onBlur={onBlur}
             placeholder="1–10"
             className={getError('retryPolicy.maxRetries') ? 'input-error' : ''}
           />

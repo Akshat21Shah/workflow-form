@@ -4,6 +4,7 @@ import type { ValidationState, ScheduleType, EventSeverity, DayOfWeek } from '..
 
 interface Props {
   validation: ValidationState;
+  onBlur: () => void;
 }
 
 const DAY_OF_WEEK_OPTIONS: { value: DayOfWeek; label: string }[] = [
@@ -16,7 +17,7 @@ const DAY_OF_WEEK_OPTIONS: { value: DayOfWeek; label: string }[] = [
   { value: 'sun', label: 'Sunday' },
 ];
 
-const TriggerConfigTab: React.FC<Props> = ({ validation }) => {
+const TriggerConfigTab: React.FC<Props> = ({ validation, onBlur }) => {
   const workflowType = useFormSlice((s) => s.basicInfo.workflowType);
   const triggerConfig = useFormSlice((s) => s.triggerConfig);
   const { updateTriggerConfig } = useFormActions();
@@ -77,6 +78,7 @@ const TriggerConfigTab: React.FC<Props> = ({ validation }) => {
               id="scheduleType"
               value={scheduleType}
               onChange={(e) => handleScheduleTypeChange(e.target.value as ScheduleType)}
+              onBlur={onBlur}
               className={getError('schedule.type') ? 'input-error' : ''}
             >
               <option value="daily">Daily</option>
@@ -100,6 +102,7 @@ const TriggerConfigTab: React.FC<Props> = ({ validation }) => {
                 onChange={(e) =>
                   handleScheduleChange({ dayOfWeek: e.target.value as DayOfWeek })
                 }
+                onBlur={onBlur}
                 className={getError('schedule.dayOfWeek') ? 'input-error' : ''}
               >
                 <option value="" disabled>Select a day</option>
@@ -130,6 +133,7 @@ const TriggerConfigTab: React.FC<Props> = ({ validation }) => {
                     dayOfMonth: e.target.value === '' ? null : Number(e.target.value),
                   })
                 }
+                onBlur={onBlur}
                 placeholder="1 – 31"
                 className={getError('schedule.dayOfMonth') ? 'input-error' : ''}
               />
@@ -152,6 +156,7 @@ const TriggerConfigTab: React.FC<Props> = ({ validation }) => {
               type="time"
               value={triggerConfig.schedule?.time ?? ''}
               onChange={(e) => handleScheduleChange({ time: e.target.value })}
+              onBlur={onBlur}
               className={getError('schedule.time') ? 'input-error' : ''}
             />
             {getError('schedule.time') && (
@@ -175,6 +180,7 @@ const TriggerConfigTab: React.FC<Props> = ({ validation }) => {
               type="text"
               value={triggerConfig.event?.source ?? ''}
               onChange={(e) => handleEventChange({ source: e.target.value })}
+              onBlur={onBlur}
               placeholder="e.g. sensor-001, payment-gateway"
               className={getError('event.source') ? 'input-error' : ''}
             />
@@ -193,6 +199,7 @@ const TriggerConfigTab: React.FC<Props> = ({ validation }) => {
               onChange={(e) =>
                 handleEventChange({ severity: e.target.value as EventSeverity })
               }
+              onBlur={onBlur}
               className={getError('event.severity') ? 'input-error' : ''}
             >
               <option value="info">Info</option>

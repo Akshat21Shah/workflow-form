@@ -5,9 +5,10 @@ import type { WorkflowType, Priority } from '../store/types';
 
 interface Props {
   validation: ValidationState;
+  onBlur: () => void;
 }
 
-const BasicInfoTab: React.FC<Props> = ({ validation }) => {
+const BasicInfoTab: React.FC<Props> = ({ validation, onBlur }) => {
   const basicInfo = useFormSlice((s) => s.basicInfo);
   const { updateBasicInfo } = useFormActions();
 
@@ -28,6 +29,7 @@ const BasicInfoTab: React.FC<Props> = ({ validation }) => {
           type="text"
           value={basicInfo.workflowName}
           onChange={(e) => updateBasicInfo({ workflowName: e.target.value })}
+          onBlur={onBlur}
           placeholder="Enter workflow name (min. 5 characters)"
           className={getError('workflowName') ? 'input-error' : ''}
         />
@@ -44,6 +46,7 @@ const BasicInfoTab: React.FC<Props> = ({ validation }) => {
           id="workflowType"
           value={basicInfo.workflowType}
           onChange={(e) => updateBasicInfo({ workflowType: e.target.value as WorkflowType })}
+          onBlur={onBlur}
           className={getError('workflowType') ? 'input-error' : ''}
         >
           <option value="scheduled">Scheduled</option>
@@ -65,6 +68,7 @@ const BasicInfoTab: React.FC<Props> = ({ validation }) => {
           id="priority"
           value={basicInfo.priority}
           onChange={(e) => updateBasicInfo({ priority: e.target.value as Priority })}
+          onBlur={onBlur}
           className={getError('priority') ? 'input-error' : ''}
         >
           <option value="low">Low</option>
